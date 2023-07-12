@@ -61,5 +61,12 @@ module.exports.getUserById = (req, res) => {
       }
       res.status(200).send(user);
     })
-    .catch(() => res.status(500).send({ message: 'Произошла ошибка.' }));
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        return res.status(400).send({
+          message: 'Переданы некорректные данные id пользователя.',
+        });
+      }
+      return res.status(500).send({ message: 'Произошла ошибка.' });
+    });
 };
