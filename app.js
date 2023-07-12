@@ -29,8 +29,10 @@ app.use('/users', require('./routes/users'));
 app.use('/cards', require('./routes/cards'));
 
 app.get('/', (_req, res) => {
-  res.send('hello 123');
+  res.send('hello');
 });
+
+app.use('*', require('./routes/page404'));
 
 app.listen(PORT, () => {
   console.log(`App is running on port ${PORT}`);
