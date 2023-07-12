@@ -23,22 +23,14 @@ module.exports.createUser = (req, res) => {
 
 module.exports.updateUserNameAndAbout = (req, res) => {
   const { name, about } = req.body;
-  User.updateOne(
-    {
-      req.user._id,
-    },
-    {
-      $set: {
-        name,
-        about,
-      },
-    },
-  )
+
+  User.findByIdAndUpdate(req.user._id, { name, about })
     .then((user) => res.send({ data: user }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         return res.status(400).send({
-          message: 'Переданы некорректные данные при обновлении данных пользователя.',
+          message:
+            'Переданы некорректные данные при обновлении данных пользователя.',
         });
       }
       return res.status(500).send({ message: 'Произошла ошибка.' });
@@ -47,16 +39,8 @@ module.exports.updateUserNameAndAbout = (req, res) => {
 
 module.exports.updateUserAvatar = (req, res) => {
   const { avatar } = req.body;
-  User.updateOne(
-    {
-      req.user._id,
-    },
-    {
-      $set: {
-        avatar,
-      },
-    },
-  )
+
+  User.findByIdAndUpdate(req.user._id, { avatar })
     .then((user) => res.send({ data: user }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
