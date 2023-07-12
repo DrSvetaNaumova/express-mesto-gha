@@ -54,6 +54,7 @@ module.exports.updateUserAvatar = (req, res) => {
 
 module.exports.getUserById = (req, res) => {
   User.findById(req.params.userId)
+    .orFail()
     .then((user) => res.status(200).send(user))
     .catch((err) => {
       if (err.name === 'CastError') {
