@@ -37,11 +37,9 @@ module.exports.likeCard = (req, res) => {
         });
       }
       if (err.name === 'CastError') {
-        return res
-          .status(400)
-          .send({
-            message: 'Переданы несуществующие данные для постановки лайка.',
-          });
+        return res.status(400).send({
+          message: 'Переданы несуществующие данные для постановки лайка.',
+        });
       }
       return res.status(500).send({ message: 'Произошла ошибка.' });
     });
@@ -51,7 +49,7 @@ module.exports.dislikeCard = (req, res) => {
   Card.findByIdAndUpdate(
     req.params.cardId,
     { $pull: { likes: req.user._id } }, // убрать _id из массива
-    { new: true },
+    { new: true }
   )
     .orFail()
     .then((card) => res.status(200).send(card))
@@ -62,11 +60,9 @@ module.exports.dislikeCard = (req, res) => {
         });
       }
       if (err.name === 'CastError') {
-        return res
-          .status(400)
-          .send({
-            message: 'Переданы несуществующие данные для снятия лайка.',
-          });
+        return res.status(400).send({
+          message: 'Переданы несуществующие данные для снятия лайка.',
+        });
       }
       return res.status(500).send({ message: 'Произошла ошибка.' });
     });
@@ -74,15 +70,14 @@ module.exports.dislikeCard = (req, res) => {
 
 module.exports.deleteCard = (req, res) => {
   Card.findByIdAndRemove(req.params.cardId)
-    .then((card) => {
-      if (!card) {
-        return res
-          .status(404)
-          .send({ messsage: 'Карточка с указанным _id не найдена.' });
-      }
-      return res.status(200).send(card);
-    })
+    .orFail()
+    .then((card) => res.status(200).send(card))
     .catch((err) => {
+      if (err.name === 'DocumentNotFoundError') {
+        return res.status(404).send({
+          message: 'Карточка с указанным id не найдена.',
+        });
+      }
       if (err.name === 'CastError') {
         res
           .status(400)

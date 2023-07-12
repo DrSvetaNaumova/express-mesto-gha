@@ -24,7 +24,7 @@ module.exports.createUser = (req, res) => {
 module.exports.updateUserNameAndAbout = (req, res) => {
   const { name, about } = req.body;
 
-  User.findByIdAndUpdate(req.user._id, { name, about }, { new: true })
+  User.findByIdAndUpdate(req.user._id, { name, about }, { new: true, runValidators: true })
     .orFail()
     .then((user) => res.status(200).send(user))
     .catch((err) => {
@@ -41,7 +41,7 @@ module.exports.updateUserNameAndAbout = (req, res) => {
 module.exports.updateUserAvatar = (req, res) => {
   const { avatar } = req.body;
 
-  User.findByIdAndUpdate(req.user._id, { avatar }, { new: true })
+  User.findByIdAndUpdate(req.user._id, { avatar }, { new: true, runValidators: true })
     .orFail()
     .then((user) => res.status(200).send(user))
     .catch((err) => {
@@ -60,7 +60,9 @@ module.exports.getUserById = (req, res) => {
     .then((user) => res.status(200).send(user))
     .catch((err) => {
       if (err.name === 'CastError') {
-        return res.status(400).send({ message: 'Переданы некорректные данные id пользователя.' });
+        return res
+          .status(400)
+          .send({ message: 'Переданы некорректные данные id пользователя.' });
       }
       if (err.name === 'DocumentNotFoundError') {
         return res.status(404).send({ message: 'Пользователь не существует.' });
