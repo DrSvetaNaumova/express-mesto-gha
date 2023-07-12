@@ -6,16 +6,6 @@ module.exports.getAllCards = (_req, res) => {
     .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
 };
 
-// module.exports.createCard = (req, res) => {
-//   const { name, link } = req.body;
-//   const owner = req.user._id;
-
-//   Card
-//     .create({ name, link, owner })
-//     .then((card) => res.send({ data: card }))
-//     .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
-// };
-
 module.exports.createCard = (req, res) => {
   const { name, link } = req.body;
   const owner = req.user._id;
@@ -28,7 +18,7 @@ module.exports.createCard = (req, res) => {
           message: 'Переданы некорректные данные при создании карточки.',
         });
       }
-      return res.status(500).send({ message: 'Произошла ошибка' });
+      return res.status(500).send({ message: 'Произошла ошибка.' });
     });
 };
 
@@ -42,7 +32,7 @@ module.exports.likeCard = (req, res) => {
     .catch((err) => {
       if (err.name === 'DocumentNotFoundError') {
         return res.status(404).send({
-          message: 'Карточка с указанным id не найдена',
+          message: 'Карточка с указанным id не найдена.',
         });
       }
       if (err.name === 'CastError') {
@@ -52,7 +42,7 @@ module.exports.likeCard = (req, res) => {
             message: 'Переданы несуществующие данные для постановки лайка.',
           });
       }
-      return res.status(500).send({ message: 'Произошла ошибка' });
+      return res.status(500).send({ message: 'Произошла ошибка.' });
     });
 };
 
@@ -66,7 +56,7 @@ module.exports.dislikeCard = (req, res) => {
     .catch((err) => {
       if (err.name === 'DocumentNotFoundError') {
         return res.status(404).send({
-          message: 'Карточка с указанным id не найдена',
+          message: 'Карточка с указанным id не найдена.',
         });
       }
       if (err.name === 'CastError') {
@@ -76,7 +66,7 @@ module.exports.dislikeCard = (req, res) => {
             message: 'Переданы несуществующие данные для снятия лайка.',
           });
       }
-      return res.status(500).send({ message: 'Произошла ошибка' });
+      return res.status(500).send({ message: 'Произошла ошибка.' });
     });
 };
 
@@ -94,8 +84,8 @@ module.exports.deleteCard = (req, res) => {
       if (err.name === 'CastError') {
         res
           .status(400)
-          .send({ message: 'Переданы некорректные данные карточки' });
+          .send({ message: 'Переданы некорректные данные карточки.' });
       }
-      return res.status(500).send({ message: 'Произошла ошибка' });
+      return res.status(500).send({ message: 'Произошла ошибка.' });
     });
 };

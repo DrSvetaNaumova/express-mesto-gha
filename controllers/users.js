@@ -3,7 +3,7 @@ const User = require('../models/user');
 module.exports.getAllUsers = (req, res) => {
   User.find({})
     .then((users) => res.send({ data: users }))
-    .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
+    .catch(() => res.status(500).send({ message: 'Произошла ошибка.' }));
 };
 
 module.exports.createUser = (req, res) => {
@@ -17,15 +17,15 @@ module.exports.createUser = (req, res) => {
           message: 'Переданы некорректные данные при создании пользователя.',
         });
       }
-      return res.status(500).send({ message: 'Произошла ошибка' });
+      return res.status(500).send({ message: 'Произошла ошибка.' });
     });
 };
 
 module.exports.updateUserNameAndAbout = (req, res) => {
-  const { name, about, _id } = req.body;
+  const { name, about } = req.body;
   User.updateOne(
     {
-      _id: req.user._id,
+      req.user._id,
     },
     {
       $set: {
@@ -41,15 +41,15 @@ module.exports.updateUserNameAndAbout = (req, res) => {
           message: 'Переданы некорректные данные при обновлении данных пользователя.',
         });
       }
-      return res.status(500).send({ message: 'Произошла ошибка' });
+      return res.status(500).send({ message: 'Произошла ошибка.' });
     });
 };
 
 module.exports.updateUserAvatar = (req, res) => {
-  const { avatar, _id } = req.body;
+  const { avatar } = req.body;
   User.updateOne(
     {
-      _id: req.user._id,
+      req.user._id,
     },
     {
       $set: {
@@ -64,7 +64,7 @@ module.exports.updateUserAvatar = (req, res) => {
           message: 'Переданы некорректные данные при обновлении аватара.',
         });
       }
-      return res.status(500).send({ message: 'Произошла ошибка' });
+      return res.status(500).send({ message: 'Произошла ошибка.' });
     });
 };
 
@@ -72,10 +72,10 @@ module.exports.getUserById = (req, res) => {
   User.findById(req.params.userId)
     .then((user) => {
       if (!user) {
-        res.status(404).send({ message: 'Пользователь не существует' });
+        res.status(404).send({ message: 'Пользователь не существует.' });
         return;
       }
       res.status(200).send(user);
     })
-    .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
+    .catch(() => res.status(500).send({ message: 'Произошла ошибка.' }));
 };
