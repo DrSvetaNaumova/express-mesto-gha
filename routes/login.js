@@ -4,7 +4,6 @@ const { celebrate, Joi } = require('celebrate');
 
 const { login } = require('../controllers/login');
 
-
 // получает из запроса почту и пароль и проверяет их
 router.post(
   '/signin',
