@@ -35,6 +35,7 @@ router.put(
       link: Joi.string().pattern(
         /^(https?:\/\/)?([\w-]{1,32}\.[\w-]{1,32})[^\s@]*$/,
       ),
+      _id: Joi.string().length(24).hex().required(),
     }),
   }),
   likeCard,
@@ -49,6 +50,7 @@ router.delete(
       link: Joi.string().pattern(
         /^(https?:\/\/)?([\w-]{1,32}\.[\w-]{1,32})[^\s@]*$/,
       ),
+      _id: Joi.string().length(24).hex().required(),
     }),
   }),
   dislikeCard,
@@ -63,6 +65,7 @@ router.delete(
       link: Joi.string().pattern(
         /^(https?:\/\/)?([\w-]{1,32}\.[\w-]{1,32})[^\s@]*$/,
       ),
+      _id: Joi.string().length(24).hex().required(),
     }),
   }),
   deleteCard,
