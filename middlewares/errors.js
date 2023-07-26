@@ -1,9 +1,11 @@
 function logErrors(err, req, res, next) {
+  console.log('function1')
   console.error(err.stack);
   next(err);
 }
 
-function errorHandler(err, req, res) {
+function errorHandler(err, req, res, next) {
+  console.log('function2')
   console.log(err.code, 'err.code');
   console.log(err.name, 'err.name');
   console.log(err, 'err');
