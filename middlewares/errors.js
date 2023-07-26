@@ -1,14 +1,10 @@
 function logErrors(err, req, res, next) {
-  console.log('function1')
   console.error(err.stack);
   next(err);
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function errorHandler(err, req, res, _next) {
-  console.log('function2')
-  console.log(err.code, 'err.code');
-  console.log(err.name, 'err.name');
-  console.log(err, 'err');
   if (err.name === 'DocumentNotFoundError') {
     res.status(404).send({
       message: 'Объект с указанным id не существует.',
