@@ -42,9 +42,8 @@ router.patch(
 router.patch(
   '/me/avatar',
   celebrate({
-    body: Joi.object().keys({
-      // avatar: Joi.string().pattern(^(https?:\/\/)? ([\w-]{1,32}\.[\w-]{1,32})[^\s@]*$),
-      avatar: Joi.string().pattern(/^(https?:\/\/)? ([\w-]{1,32}\.[\w-]{1,32})[^\s@]*$/),
+    body: Joi.object({
+      avatar: Joi.string().pattern(/^(https?:\/\/)?([\w-]{1,32}\.[\w-]{1,32})[^\s@]*$/),
     }),
   }),
   updateUserAvatar,

@@ -4,9 +4,6 @@ function logErrors(err, req, res, next) {
 }
 
 function errorHandler(err, req, res) {
-  console.log(err.name);
-  console.log(err.code);
-  console.log(err);
   if (err.name === 'DocumentNotFoundError') {
     res.status(404).send({
       message: 'Объект с указанным id не существует.',
