@@ -120,7 +120,7 @@ module.exports.deleteCard = async (req, res, next) => {
 
     if (!card.owner.equals(req.user._id)) {
       return res
-        .status(401)
+        .status(403)
         .send({ message: 'Нет прав для удаления карточки' });
     }
     await Card.findByIdAndRemove(req.params.cardId).orFail();
