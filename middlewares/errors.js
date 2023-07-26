@@ -16,7 +16,7 @@ function errorHandler(err, req, res) {
     });
   }
 
-  if (err.name === 'ValidationError' || err.name === 'CastError' || err.name === 'BadRequest') {
+  if (err.name === 'ValidationError' || err.name === 'CastError') {
     res.status(400).send({
       message: 'Переданы некорректные данные объекта.',
     });
