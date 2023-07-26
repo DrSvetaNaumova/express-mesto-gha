@@ -10,7 +10,7 @@ module.exports.createUser = async (req, res, next) => {
     password,
   } = req.body;
   try {
-    const hash = await bcrypt.hash(req.body.password, 10);
+    const hash = await bcrypt.hash(password, 10);
     const user = await User.create({
       name,
       about,

@@ -88,7 +88,7 @@ module.exports.updateUserAvatar = async (req, res, next) => {
 
 module.exports.getUserById = async (req, res, next) => {
   try {
-    const user = await User.findById(req.userId)
+    const user = await User.findById(req.params.userId)
       .orFail();
     return res.status(200).send(user);
   } catch (err) {
