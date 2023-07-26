@@ -30,11 +30,7 @@ router.post(
 router.put(
   '/:cardId/likes',
   celebrate({
-    body: Joi.object().keys({
-      name: Joi.string().required().min(2).max(30),
-      link: Joi.string().required().pattern(
-        /^(https?:\/\/)?([\w-]{1,32}\.[\w-]{1,32})[^\s@]*$/,
-      ),
+    body: Joi.object({
       _id: Joi.string().length(24).hex().required(),
     }),
   }),
@@ -45,11 +41,7 @@ router.put(
 router.delete(
   '/:cardId/likes',
   celebrate({
-    body: Joi.object().keys({
-      name: Joi.string().required().min(2).max(30),
-      link: Joi.string().required().pattern(
-        /^(https?:\/\/)?([\w-]{1,32}\.[\w-]{1,32})[^\s@]*$/,
-      ),
+    body: Joi.object({
       _id: Joi.string().length(24).hex().required(),
     }),
   }),
@@ -60,11 +52,7 @@ router.delete(
 router.delete(
   '/:cardId',
   celebrate({
-    body: Joi.object().keys({
-      name: Joi.string().required().min(2).max(30),
-      link: Joi.string().required().pattern(
-        /^(https?:\/\/)?([\w-]{1,32}\.[\w-]{1,32})[^\s@]*$/,
-      ),
+    body: Joi.object({
       _id: Joi.string().length(24).hex().required(),
     }),
   }),
