@@ -3,7 +3,7 @@ function logErrors(err, req, res, next) {
   next(err);
 }
 
-function errorHandler(err, req, res ) {
+function errorHandler(err, req, res) {
   console.log(err.name);
   console.log(err.code);
   console.log(err);
