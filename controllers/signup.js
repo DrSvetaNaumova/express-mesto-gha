@@ -15,7 +15,7 @@ module.exports.createUser = async (req, res, next) => {
     });
     return res
       .status(201)
-      .send({ name: user.name, about: user.about, email: user.email });
+      .send({ name: user.name, about: user.about, avatar: user.avatar, email: user.email });
   } catch (err) {
     return next(err);
   }
