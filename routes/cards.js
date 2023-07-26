@@ -29,33 +29,18 @@ router.post(
 // ставит лайк
 router.put(
   '/:cardId/likes',
-  celebrate({
-    body: Joi.object({
-      _id: Joi.string().length(24).hex().required(),
-    }),
-  }),
   likeCard,
 );
 
 // удаляет лайк
 router.delete(
   '/:cardId/likes',
-  celebrate({
-    body: Joi.object({
-      _id: Joi.string().length(24).hex().required(),
-    }),
-  }),
   dislikeCard,
 );
 
 // удаляет карточку
 router.delete(
   '/:cardId',
-  celebrate({
-    body: Joi.object({
-      _id: Joi.string().length(24).hex().required(),
-    }),
-  }),
   deleteCard,
 );
 

@@ -4,7 +4,7 @@ function logErrors(err, req, res, next) {
   next(err);
 }
 
-function errorHandler(err, req, res, next) {
+function errorHandler(err, req, res, _next) {
   console.log('function2')
   console.log(err.code, 'err.code');
   console.log(err.name, 'err.name');
