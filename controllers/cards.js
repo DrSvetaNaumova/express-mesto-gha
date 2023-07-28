@@ -51,7 +51,7 @@ module.exports.likeCard = async (req, res, next) => {
       card = await Card.findByIdAndUpdate(
         req.params.cardId,
         { $addToSet: { likes: req.user._id } }, // добавить _id в массив, если его там нет
-        { new: true }
+        { new: true },
       ).orFail();
     } catch (err) {
       if (!card) {
@@ -109,7 +109,7 @@ module.exports.dislikeCard = async (req, res, next) => {
       card = await Card.findByIdAndUpdate(
         req.params.cardId,
         { $pull: { likes: req.user._id } }, // убрать _id из массива
-        { new: true }
+        { new: true },
       ).orFail();
     } catch (err) {
       if (!card) {
