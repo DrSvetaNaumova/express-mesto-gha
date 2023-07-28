@@ -162,18 +162,12 @@ module.exports.dislikeCard = async (req, res, next) => {
 
 module.exports.deleteCard = async (req, res, next) => {
   try {
-    let card;
-    try {
-      card = await Card.findById(req.params.cardId).orFail();
-    } catch (err) {
-      if (!card) {
-        throw new NotFoundDataError('Карточка не существует.');
-      }
-      if (!card.owner.equals(req.user._id)) {
-        throw new ForbiddenError('Нет прав для удаления карточки.');
-      } else {
-        throw err;
-      }
+    const card = await Card.findById(req.params.cardId).orFail();
+    if (!card) {
+      throw new NotFoundDataError('Карточка не существует.');
+    }
+    if (String(card.owner) !== String(req.user._id)) {
+      throw new ForbiddenError('Нет прав для удаления карточки.');
     }
     await Card.findByIdAndRemove(req.params.cardId).orFail();
     return res.status(200).send(card);
