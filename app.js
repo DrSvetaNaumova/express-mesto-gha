@@ -26,9 +26,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.post('/signup', require('./routes/signup'));
 app.post('/signin', require('./routes/login'));
 
-app.use(auth);
-app.use('/users', require('./routes/users'));
-app.use('/cards', require('./routes/cards'));
+app.use('/users', auth, require('./routes/users'));
+app.use('/cards', auth, require('./routes/cards'));
 
 // app.get('/', (_req, res) => {
 //   res.send('hello');
