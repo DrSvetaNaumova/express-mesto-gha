@@ -1,4 +1,5 @@
 const Card = require('../models/card');
+const NotFoundDataError = require('../errors/NotFoundDataError');
 
 module.exports.getAllCards = async (_req, res, next) => {
   try {
@@ -44,16 +45,38 @@ module.exports.createCard = async (req, res, next) => {
 
 module.exports.likeCard = async (req, res, next) => {
   try {
-    const card = await Card.findByIdAndUpdate(
-      req.params.cardId,
-      { $addToSet: { likes: req.user._id } }, // добавить _id в массив, если его там нет
-      { new: true },
-    ).orFail();
+    let card;
+    try {
+      card = await Card.findByIdAndUpdate(
+        req.params.cardId,
+        { $addToSet: { likes: req.user._id } }, // добавить _id в массив, если его там нет
+        { new: true },
+      ).orFail();
+    } catch (err) {
+      if (!card) {
+        throw new NotFoundDataError('Карточка не существует.');
+      } else {
+        throw err;
+      }
+    }
     return res.status(200).send(card);
   } catch (err) {
     return next(err);
   }
 };
+
+// module.exports.likeCard = async (req, res, next) => {
+//   try {
+//     const card = await Card.findByIdAndUpdate(
+//       req.params.cardId,
+//       { $addToSet: { likes: req.user._id } }, // добавить _id в массив, если его там нет
+//       { new: true },
+//     ).orFail();
+//     return res.status(200).send(card);
+//   } catch (err) {
+//     return next(err);
+//   }
+// };
 
 // module.exports.likeCard = (req, res) => {
 //   Card.findByIdAndUpdate(
@@ -80,16 +103,38 @@ module.exports.likeCard = async (req, res, next) => {
 
 module.exports.dislikeCard = async (req, res, next) => {
   try {
-    const card = await Card.findByIdAndUpdate(
-      req.params.cardId,
-      { $pull: { likes: req.user._id } }, // убрать _id из массива
-      { new: true },
-    ).orFail();
+    let card;
+    try {
+      card = await Card.findByIdAndUpdate(
+        req.params.cardId,
+        { $pull: { likes: req.user._id } }, // убрать _id из массива
+        { new: true },
+      ).orFail();
+    } catch (err) {
+      if (!card) {
+        throw new NotFoundDataError('Карточка не существует.');
+      } else {
+        throw err;
+      }
+    }
     return res.status(200).send(card);
   } catch (err) {
     return next(err);
   }
 };
+
+// module.exports.dislikeCard = async (req, res, next) => {
+//   try {
+//     const card = await Card.findByIdAndUpdate(
+//       req.params.cardId,
+//       { $pull: { likes: req.user._id } }, // убрать _id из массива
+//       { new: true }
+//     ).orFail();
+//     return res.status(200).send(card);
+//   } catch (err) {
+//     return next(err);
+//   }
+// };
 
 // module.exports.dislikeCard = (req, res) => {
 //   Card.findByIdAndUpdate(

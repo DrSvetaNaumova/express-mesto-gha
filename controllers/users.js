@@ -1,5 +1,5 @@
 const User = require('../models/user');
-const InaccurateDataError = require('../errors/InaccurateDataError');
+const NotFoundDataError = require('../errors/NotFoundDataError');
 
 module.exports.getAllUsers = async (req, res, next) => {
   try {
@@ -48,14 +48,12 @@ module.exports.updateUserNameAndAbout = async (req, res, next) => {
       req.user._id,
       { name, about },
       { new: true, runValidators: true },
-    )
-      .orFail();
+    ).orFail();
     return res.status(200).send(user);
   } catch (err) {
     return next(err);
   }
 };
-
 
 // module.exports.updateUserNameAndAbout = (req, res) => {
 //   const { name, about } = req.body;
@@ -84,7 +82,7 @@ module.exports.updateUserAvatar = async (req, res, next) => {
     const user = await User.findByIdAndUpdate(
       req.user._id,
       { avatar },
-      { new: true, runValidators: true }
+      { new: true, runValidators: true },
     ).orFail();
     return res.status(200).send(user);
   } catch (err) {
@@ -114,12 +112,30 @@ module.exports.updateUserAvatar = async (req, res, next) => {
 
 module.exports.getUserById = async (req, res, next) => {
   try {
-    const user = await User.findById(req.params.userId).orFail();
+    let user;
+    try {
+      user = await User.findById(req.params.userId).orFail();
+    } catch (err) {
+      if (!user) {
+        throw new NotFoundDataError('Пользователь не существует.');
+      } else {
+        throw err;
+      }
+    }
     return res.status(200).send(user);
   } catch (err) {
     return next(err);
   }
 };
+
+// module.exports.getUserById = async (req, res, next) => {
+//   try {
+//     const user = await User.findById(req.params.userId).orFail();
+//     return res.status(200).send(user);
+//   } catch (err) {
+//     return next(err);
+//   }
+// };
 
 // module.exports.getUserById = (req, res) => {
 //   User.findById(req.userId)
