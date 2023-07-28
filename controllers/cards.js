@@ -1,5 +1,6 @@
 const Card = require('../models/card');
 const NotFoundDataError = require('../errors/NotFoundDataError');
+const ForbiddenError = require('../errors/ForbiddenError');
 
 module.exports.getAllCards = async (_req, res, next) => {
   try {
@@ -50,7 +51,7 @@ module.exports.likeCard = async (req, res, next) => {
       card = await Card.findByIdAndUpdate(
         req.params.cardId,
         { $addToSet: { likes: req.user._id } }, // добавить _id в массив, если его там нет
-        { new: true },
+        { new: true }
       ).orFail();
     } catch (err) {
       if (!card) {
@@ -108,7 +109,7 @@ module.exports.dislikeCard = async (req, res, next) => {
       card = await Card.findByIdAndUpdate(
         req.params.cardId,
         { $pull: { likes: req.user._id } }, // убрать _id из массива
-        { new: true },
+        { new: true }
       ).orFail();
     } catch (err) {
       if (!card) {
@@ -161,12 +162,17 @@ module.exports.dislikeCard = async (req, res, next) => {
 
 module.exports.deleteCard = async (req, res, next) => {
   try {
-    const card = await Card.findById(req.params.cardId).orFail();
-
-    if (!card.owner.equals(req.user._id)) {
-      return res
-        .status(403)
-        .send({ message: 'Нет прав для удаления карточки' });
+    let card;
+    try {
+      card = await Card.findById(req.params.cardId).orFail();
+    } catch (err) {
+      if (!card) {
+        throw new NotFoundDataError('Карточка не существует.');
+      } else if (!card.owner.equals(req.user._id)) {
+        throw new ForbiddenError('Нет прав для удаления карточки.');
+      } else {
+        throw err;
+      }
     }
     await Card.findByIdAndRemove(req.params.cardId).orFail();
     return res.status(200).send(card);
@@ -174,3 +180,19 @@ module.exports.deleteCard = async (req, res, next) => {
     return next(err);
   }
 };
+
+// module.exports.deleteCard = async (req, res, next) => {
+//   try {
+//     const card = await Card.findById(req.params.cardId).orFail();
+
+//     if (!card.owner.equals(req.user._id)) {
+//       return res
+//         .status(403)
+//         .send({ message: 'Нет прав для удаления карточки' });
+//     }
+//     await Card.findByIdAndRemove(req.params.cardId).orFail();
+//     return res.status(200).send(card);
+//   } catch (err) {
+//     return next(err);
+//   }
+// };
