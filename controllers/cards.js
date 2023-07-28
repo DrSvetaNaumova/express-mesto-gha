@@ -174,7 +174,7 @@ module.exports.deleteCard = async (req, res, next) => {
         throw err;
       }
     }
-    await Card.findByIdAndRemove(req.params.cardId).orFail();
+    await Card.remove(card).orFail();
     return res.status(200).send(card);
   } catch (err) {
     return next(err);
