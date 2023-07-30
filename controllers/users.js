@@ -51,7 +51,9 @@ module.exports.getUserById = async (req, res, next) => {
 
 module.exports.getCurrentUserInfo = async (req, res, next) => {
   try {
-    const user = await User.findById(req.user._id).orFail(new NotFoundDataError('Пользователь не существует'));
+    const user = await User.findById(req.user._id).orFail(
+      new NotFoundDataError('Пользователь не существует'),
+    );
     return res.status(200).send(user);
   } catch (err) {
     return next(err);
