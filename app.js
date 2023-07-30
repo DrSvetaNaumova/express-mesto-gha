@@ -11,6 +11,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/mestodb');
 const { errors } = require('celebrate');
 
 const { errorHandler, logErrors } = require('./middlewares/errors');
+
 const router = require('./routes/index');
 
 app.use(express.json());
