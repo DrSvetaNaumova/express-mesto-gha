@@ -21,6 +21,6 @@ app.use(errors());
 
 app.use(logErrors, errorHandler);
 
-// app.listen(PORT, () => {
-//   console.log(`App is running on port ${PORT}`);
-// });
+app.listen(PORT, () => {
+  console.log(`App is running on port ${PORT}`);
+});
