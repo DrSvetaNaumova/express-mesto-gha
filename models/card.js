@@ -22,17 +22,18 @@ const cardSchema = new mongoose.Schema(
     owner: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
+      ref: 'user', // необходимо для правильной работы метода populate, который объединяет объекты из разных коллекций БД.
     },
 
     likes: {
       type: mongoose.Schema.Types.Array,
       default: [],
+      ref: 'user', //  необходимо для правильной работы метода populate, который объединяет объекты из разных коллекций БД.
     },
 
     createdAt: {
       type: Date,
       default: Date.now,
-      required: true,
     },
   },
 

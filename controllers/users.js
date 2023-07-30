@@ -17,7 +17,7 @@ module.exports.updateUserNameAndAbout = async (req, res, next) => {
       req.user._id,
       { name, about },
       { new: true, runValidators: true },
-    ).orFail();
+    ).orFail(new NotFoundDataError('Пользователь не существует'));
     return res.status(200).send(user);
   } catch (err) {
     return next(err);
@@ -31,7 +31,7 @@ module.exports.updateUserAvatar = async (req, res, next) => {
       req.user._id,
       { avatar },
       { new: true, runValidators: true },
-    ).orFail();
+    ).orFail(new NotFoundDataError('Пользователь не существует'));
     return res.status(200).send(user);
   } catch (err) {
     return next(err);
@@ -40,16 +40,9 @@ module.exports.updateUserAvatar = async (req, res, next) => {
 
 module.exports.getUserById = async (req, res, next) => {
   try {
-    let user;
-    try {
-      user = await User.findById(req.params.userId).orFail();
-    } catch (err) {
-      if (!user) {
-        throw new NotFoundDataError('Пользователь не существует.');
-      } else {
-        throw err;
-      }
-    }
+    const user = await User.findById(req.params.userId).orFail(
+      new NotFoundDataError('Пользователь не существует'),
+    );
     return res.status(200).send(user);
   } catch (err) {
     return next(err);
@@ -58,7 +51,7 @@ module.exports.getUserById = async (req, res, next) => {
 
 module.exports.getCurrentUserInfo = async (req, res, next) => {
   try {
-    const user = await User.findById(req.user._id).orFail();
+    const user = await User.findById(req.user._id).orFail(new NotFoundDataError('Пользователь не существует'));
     return res.status(200).send(user);
   } catch (err) {
     return next(err);

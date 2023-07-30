@@ -24,20 +24,12 @@ module.exports.createCard = async (req, res, next) => {
 
 module.exports.likeCard = async (req, res, next) => {
   try {
-    let card;
-    try {
-      card = await Card.findByIdAndUpdate(
-        req.params.cardId,
-        { $addToSet: { likes: req.user._id } }, // добавить _id в массив, если его там нет
-        { new: true },
-      ).orFail();
-    } catch (err) {
-      if (!card) {
-        throw new NotFoundDataError('Карточка не существует.');
-      } else {
-        throw err;
-      }
-    }
+    const card = await Card.findByIdAndUpdate(
+      req.params.cardId,
+      { $addToSet: { likes: req.user._id } }, // добавить _id в массив, если его там нет
+      { new: true },
+    ).orFail(new NotFoundDataError('Карточка не существует.'));
+
     return res.status(200).send(card);
   } catch (err) {
     return next(err);
@@ -46,20 +38,12 @@ module.exports.likeCard = async (req, res, next) => {
 
 module.exports.dislikeCard = async (req, res, next) => {
   try {
-    let card;
-    try {
-      card = await Card.findByIdAndUpdate(
-        req.params.cardId,
-        { $pull: { likes: req.user._id } }, // убрать _id из массива
-        { new: true },
-      ).orFail();
-    } catch (err) {
-      if (!card) {
-        throw new NotFoundDataError('Карточка не существует.');
-      } else {
-        throw err;
-      }
-    }
+    const card = await Card.findByIdAndUpdate(
+      req.params.cardId,
+      { $pull: { likes: req.user._id } }, // убрать _id из массива
+      { new: true },
+    ).orFail(new NotFoundDataError('Карточка не существует.'));
+
     return res.status(200).send(card);
   } catch (err) {
     return next(err);
@@ -68,14 +52,13 @@ module.exports.dislikeCard = async (req, res, next) => {
 
 module.exports.deleteCard = async (req, res, next) => {
   try {
-    const card = await Card.findById(req.params.cardId).orFail();
-    if (!card) {
-      throw new NotFoundDataError('Карточка не существует.');
-    }
+    const card = await Card.findById(req.params.cardId).orFail(
+      new NotFoundDataError('Карточка не существует.'),
+    );
     if (String(card.owner) !== String(req.user._id)) {
       throw new ForbiddenError('Нет прав для удаления карточки.');
     }
-    await Card.findByIdAndRemove(req.params.cardId).orFail();
+    await Card.deleteOne(req.params.cardId).orFail(new NotFoundDataError('Карточка не существует.'));
     return res.status(200).send(card);
   } catch (err) {
     return next(err);
