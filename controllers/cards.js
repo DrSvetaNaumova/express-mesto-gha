@@ -58,7 +58,7 @@ module.exports.deleteCard = async (req, res, next) => {
     if (String(card.owner) !== String(req.user._id)) {
       throw new ForbiddenError('Нет прав для удаления карточки.');
     }
-    await Card.deleteOne(req.params.cardId).orFail(new NotFoundDataError('Карточка не существует.'));
+    await Card.findByIdAndRemove(req.params.cardId).orFail(new NotFoundDataError('Карточка не существует.'));
     return res.status(200).send(card);
   } catch (err) {
     return next(err);
